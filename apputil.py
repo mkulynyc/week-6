@@ -60,3 +60,44 @@ class Genius:
         artist_data = artist_response.json()
 
         return artist_data
+    
+    def get_artists(self, search_terms):
+
+        '''
+        Function to get multiple artists' information from Genius API based on a list of search terms.
+
+        Parameters:
+        search_terms (list): A list of artist names to search for.
+
+        Returns:
+        pd.DataFrame: A DataFrame containing artist information for each search term.
+
+        '''
+        
+        results = []
+
+        for term in search_terms:
+            # Try to get artist data, handle exceptions if artist not found
+            try:
+                # Get artist data for each term
+                artist_data = self.get_artist(term)
+                artist_info = artist_data["response"]["artist"]
+
+                # Append relevant info to results list
+                results.append({
+                    "search_term": term,
+                    "artist_name": artist_info.get("name"),
+                    "artist_id": artist_info.get("id"),
+                    "followers_count": artist_info.get("followers_count")
+                })
+
+            # Throw in None values if any error occurs (e.g., artist not found)
+            except Exception:
+                results.append({
+                    "search_term": term,
+                    "artist_name": None,
+                    "artist_id": None,
+                    "followers_count": None
+                })
+
+        return pd.DataFrame(results)
