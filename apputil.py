@@ -26,7 +26,7 @@ class Genius:
 
         # Use token from env if not passed directly
         self.access_token = access_token or os.getenv("ACCESS_CODE")
-        self.base_url = https://api.genius.com
+        self.base_url = "https://api.genius.com"
         self.headers = {
             "Authorization": f"Bearer {self.access_token}"
         }
